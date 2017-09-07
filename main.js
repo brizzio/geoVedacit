@@ -12,6 +12,7 @@
     function preload() {
       
       table = loadTable("testetab.txt", "tsv", "header");
+      tabCliVedacit = loadTable("clientesVedacit.txt", "tsv", "header");
       
       console.log('on preload');
     }
@@ -19,13 +20,10 @@
     function setup() {
       //count the columns
       console.log('on setup');
-      print(table.getRowCount() + " total rows in table");
-      print(table.getColumnCount() + " total columns in table");
-      
-     
-      print(table.getColumn("cnpj")[0]);
-      //["Goat", "Leopard", "Zebra"]
-    
+      //print(table.getRowCount() + " total rows in table");
+      //print(table.getColumnCount() + " total columns in table");
+      //print(table.getColumn("cnpj")[0]);
+          
       //cycle through the table
       // for (var r = 0; r < table.getRowCount(); r++)
       //   for (var c = 0; c < table.getColumnCount(); c++) {
@@ -62,7 +60,7 @@
 
       //remove os indicadores padrao do google maps
       map.setOptions({styles: styles['hide']});
-      //adiciona os marcadores de local
+      //adiciona os marcadores de local para a base externa de clientes
         for (var r = 0; r < table.getRowCount(); r++) {
               var mapLatitude = table.getColumn("latitude")[r].replace(",", ".");
               var mapLongitude = table.getColumn("longitude")[r].replace(",", ".");
@@ -80,9 +78,49 @@
                   });
               }
         }  
+        
+        //monta os maracdores dos clientes vedacit
+        //Razao	NomeCliente	Bairro	Cidade	UF	TipoLogradouro	Logradouro	Numero	CEP
+        for (var r = 0; r < tabCliVedacit.getRowCount(); r++) {
+          var endereco = tabCliVedacit.getColumn("TipoLogradouro")[r] + ' ' +
+                         tabCliVedacit.getColumn("Logradouro")[r] + ', ' +
+                         tabCliVedacit.getColumn("Numero")[r] + ' ' +
+                         tabCliVedacit.getColumn("Cidade")[r] + ' ' +
+                         tabCliVedacit.getColumn("UF")[r];
+
+          print(endereco);
+
+          
+          var mapMarkCliente = tabCliVedacit.getColumn("NomeCliente")[r];
+         
+           GMaps.geocode({
+              address: endereco,
+              callback: function(results, status) {
+             // alert(status);
+                if (status == 'OK') {
+                  var latlng = results[0].geometry.location;
+                  map.setCenter(latlng.lat(), latlng.lng());
+                                    
+                  map.addMarker({
+                    lat: latlng.lat(),
+                    lng: latlng.lng(),
+                    title: mapMarkCliente,
+                    click: function(e) {
+                      alert('Cliente na Base Vedacit - ' + e.title);
+                    }
+                  });
+                }else{
+                //alert('error');
+                }
+              }
+            });
+          }
+    }  
+        
 
 
-    }
+
+   
     
 
 
