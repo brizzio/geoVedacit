@@ -10,12 +10,9 @@
     
     
     function preload() {
-      //my table is comma separated value "csv"
-      //and has a header specifying the columns labels
+      
       table = loadTable("testetab.txt", "tsv", "header");
-      //the file can be remote
-      //table = loadTable("http://p5js.org/reference/assets/mammals.csv",
-      //                  "csv", "header");
+      
       console.log('on preload');
     }
 
@@ -39,7 +36,7 @@
             div: '#map',
             lat: -15.77972,
             lng: -47.92972,
-            zoom: 6
+            zoom: 4
         });
       
         var styles = {
@@ -57,6 +54,12 @@
           ]
         };  
 
+        var pinColor = "54e0ec";
+        var pinBase = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            new google.maps.Size(21, 34),
+            new google.maps.Point(0,0),
+            new google.maps.Point(10, 34));
+
       //remove os indicadores padrao do google maps
       map.setOptions({styles: styles['hide']});
       //adiciona os marcadores de local
@@ -70,6 +73,7 @@
                     lat: mapLatitude,
                     lng: mapLongitude,
                     title: mapMarkTitle,
+                    icon: pinBase,
                     click: function(e) {
                       alert('Voce esta acessando ' + e.title);
                     }
