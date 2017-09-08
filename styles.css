@@ -1,6 +1,6 @@
 #map {
     width: 100%;
-    height: 500px;
+    height: 550px;
   }
 
 body {
@@ -15,4 +15,28 @@ body {
   height: 40px;
   padding-top: 13px;
   padding-right: 20px;
+}
+
+#btn-cli-vedacit{
+   background-color: #F76054;
+   margin: 15px;
+   width: 100%;
+}
+
+#btn-cli-novos{
+  background-color: #54e0ec;
+  margin: 15px;
+  margin-right: 15px;
+  width: 95%;
+}
+
+#myProgress {
+  width: 100%;
+  height: 10px;
+  background-color: grey;
+}
+#myBar {
+  width: 1%;
+  height: 10px;
+  background-color: green;
 }
